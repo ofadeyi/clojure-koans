@@ -9,8 +9,8 @@
 
 (defmacro infix-better [form]
   `(~(second form) ; Note the syntax-quote (`) and unquote (~) characters!
-    __
-    __ ))
+     ~(first form)
+     ~(nth 3 form) ))
 
 (defmacro r-infix [form]
   (cond (not (seq? form))
@@ -27,13 +27,13 @@
 
 (meditations
   "Macros are like functions created at compile time"
-  (= __ (hello "Macros!"))
+  (= "Hello, Macros!" (hello "Macros!"))
 
   "I can haz infix?"
-  (= __ (infix (9 + 1)))
+  (= (+ 9 1) (infix (9 + 1)))
 
   "Remember, these are nothing but code transformations"
-  (= __ (macroexpand '(infix (9 + 1))))
+  (= (list (second '(9 + 1)) (first '(9 + 1)) (nth '(9 + 1) 2)) (macroexpand '(infix (9 + 1))))
 
   "You can do better than that - hand crafting FTW!"
   (= __ (macroexpand '(infix-better (10 * 2))))
